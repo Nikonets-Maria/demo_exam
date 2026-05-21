@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель администратора - Водить.РФ</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Панель администратора</h1>
+            <p>Добро пожаловать, <span id="admin-name"></span>!</p>
+            <button onclick="logout()" class="danger">Выйти</button>
+        </div>
+        
+        <!-- Все заявки -->
+        <div class="section">
+            <h2>Все заявки</h2>
+            <table class="data-table" id="all-applications-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Пользователь</th>
+                        <th>Курс</th>
+                        <th>Дата начала</th>
+                        <th>Оплата</th>
+                        <th>Статус</th>
+                        <th>Действие</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    
+    <script src="/script.js"></script>
+</body>
+</html>

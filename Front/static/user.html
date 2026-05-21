@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет - Водить.РФ</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Личный кабинет</h1>
+            <p>Добро пожаловать, <span id="user-name"></span>!</p>
+            <button onclick="logout()" class="danger">Выйти</button>
+        </div>
+        
+        <!-- Форма создания заявки -->
+        <div class="section">
+            <h2>Новая заявка на обучение</h2>
+            <div class="form-group">
+                <input type="text" id="course-name" placeholder="Наименование курса">
+            </div>
+            <div class="form-group">
+                <input type="date" id="start-date">
+            </div>
+            <div class="form-group">
+                <select id="payment-method">
+                    <option value="наличные">Наличными</option>
+                    <option value="перевод по номеру телефона">Перевод по номеру телефона</option>
+                </select>
+            </div>
+            <button onclick="createApplication()" class="success">Отправить заявку</button>
+        </div>
+        
+        <!-- Мои заявки -->
+        <div class="section">
+            <h2>Мои заявки</h2>
+            <table class="data-table" id="my-applications-table">
+                <thead>
+                    <tr>
+                        <th>Курс</th>
+                        <th>Дата начала</th>
+                        <th>Способ оплаты</th>
+                        <th>Статус</th>
+                        <th>Дата подачи</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        
+        <!-- Оставить отзыв -->
+        <div class="section">
+            <h2>Оставить отзыв</h2>
+            <div class="form-group">
+                <select id="review-application">
+                    <option value="">Выберите завершённый курс</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <select id="review-rating">
+                    <option value="5">5 - Отлично</option>
+                    <option value="4">4 - Хорошо</option>
+                    <option value="3">3 - Удовлетворительно</option>
+                    <option value="2">2 - Плохо</option>
+                    <option value="1">1 - Ужасно</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <textarea id="review-comment" rows="3" placeholder="Ваш комментарий..."></textarea>
+            </div>
+            <button onclick="submitReview()">Отправить отзыв</button>
+        </div>
+        
+        <!-- Мои отзывы -->
+        <div class="section">
+            <h2>Мои отзывы</h2>
+            <div id="my-reviews"></div>
+        </div>
+    </div>
+    
+    <script src="/script.js"></script>
+</body>
+</html>

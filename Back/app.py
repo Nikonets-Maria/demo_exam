@@ -25,13 +25,19 @@ def get_db_connection():
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
-# Раздача фронтенда
+FRONTEND_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'Front'))
+
+# Раздача главной страницы
 @app.route('/')
 def serve_frontend():
-    frontend_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'Front', 'pages'))
-    return send_from_directory(frontend_dir, 'index.html')
-# C:\Users\DEMEXAM\Desktop\demo_exam\DEMO\app\Front\pages\index.html
-# C:\Users\DEMEXAM\Desktop\demo_exam\DEMO\app\Back\app.py
+    return send_from_directory(os.path.join(FRONTEND_DIR, 'pages'), 'index.html')
+
+# Раздача остальных статических файлов (HTML, CSS, JS)
+@app.route('/<path:filename>')
+def serve_static(filename):
+    # Теперь файлы будут искаться в папке Front/static
+    return send_from_directory(os.path.join(FRONTEND_DIR, 'static'), filename)
+
 
 # ==================== РЕГИСТРАЦИЯ ====================
 @app.route('/api/register', methods=['POST'])
@@ -351,11 +357,6 @@ def check_session():
             'login': session.get('login')
         })
     return jsonify({'authenticated': False})
-
-# Раздача статических HTML-файлов
-@app.route('/static/<path:filename>')
-def serve_static(filename):
-    return send_from_directory('static', filename)
 
 
 @app.route('/api/admin/users/<int:user_id>/block', methods=['PUT'])
