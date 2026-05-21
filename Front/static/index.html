@@ -1,43 +1,85 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Водить.РФ</title>
     <link rel="stylesheet" href="/style.css">
 </head>
+
 <body>
+    <div class="slideshow-container">
+        <div class="slideshow">
+            <div class="slide active" id="slide1">
+                <img src="/assets/1498802745470_bulletin.jpg" alt="Слайд 1">
+                <div class="slide-text">Профессиональное образование</div>
+            </div>
+            <div class="slide" id="slide2">
+                <img src="/assets/182.jpg" alt="Слайд 2">
+                <div class="slide-text">Современные технологии</div>
+            </div>
+            <div class="slide" id="slide3">
+                <img src="/assets/6055993d3dba6_havnekalesje.png" alt="Слайд 3">
+                <div class="slide-text">Доступное обучение</div>
+            </div>
+
+            <div class="slide" id="slide4">
+                <img src="/assets/658aad453358fbce48a7b97f.jpg" alt="Слайд 4">
+                <div class="slide-text">Квалифицированные преподаватели</div>
+            </div>
+            <div class="slide" id="slide5">
+                <img src="/assets/64536aafe5a415045ada8c4a.jpg" alt="Слайд 5">
+                <div class="slide-text">Удобный формат обучения</div>
+            </div>
+            <div class="slide" id="slide6">
+                <img src="/assets/sNP7I-h35CvIJxmvNQiERhJRx-YhipQKfCK4rtz.jpg" alt="Слайд 6">
+                <div class="slide-text">Сертификаты государственного образца</div>
+            </div>
+        </div>
+
+        <button class="prev" onclick="changeSlide(-1)">&#10094;</button>
+        <button class="next" onclick="changeSlide(1)">&#10095;</button>
+
+        <div class="dots">
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+            <span class="dot" onclick="currentSlide(3)"></span>
+            <span class="dot" onclick="currentSlide(4)"></span>
+            <span class="dot" onclick="currentSlide(5)"></span>
+            <span class="dot" onclick="currentSlide(6)"></span>
+        </div>
+    </div>
+
     <div class="container">
-        <h1>Водить.РФ</h1>
-        
         <div class="menu">
-            <h2>Добро пожаловать</h2>
+            <h2>Добро пожаловать в портал онлайн-курсов ДПО</h2>
+
+            <div class="features">
+                <div class="feature">
+                    <h3>Качественное образование</h3>
+                    <p>Программы дополнительного профессионального образования</p>
+                </div>
+                <div class="feature">
+                    <h3>Удобный формат</h3>
+                    <p>Обучение онлайн в удобное для вас время</p>
+                </div>
+                <div class="feature">
+                    <h3>Документ об образовании</h3>
+                    <p>По окончании выдаётся удостоверение установленного образца</p>
+                </div>
+            </div>
+
             <p>Для работы с порталом необходимо авторизоваться или зарегистрироваться.</p>
-            
+
             <div class="button-group">
                 <a href="/login.html" class="button">Вход в систему</a>
                 <a href="/register.html" class="button">Регистрация</a>
             </div>
         </div>
     </div>
-    
-    <script>
-        // Проверяем, есть ли активная сессия
-        fetch('/api/check_session', {
-            method: 'GET',
-            credentials: 'include'
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.authenticated) {
-                if (data.role === 'admin') {
-                    window.location.href = '/admin.html';
-                } else {
-                    window.location.href = '/user.html';
-                }
-            }
-        })
-        .catch(error => console.error('Ошибка:', error));
-    </script>
+
+    <script src="/script.js"></script>
 </body>
+
 </html>

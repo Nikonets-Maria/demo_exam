@@ -30,7 +30,7 @@ FRONTEND_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'Fr
 # Раздача главной страницы
 @app.route('/')
 def serve_frontend():
-    return send_from_directory(os.path.join(FRONTEND_DIR, 'pages'), 'index.html')
+    return send_from_directory(os.path.join(FRONTEND_DIR, 'staic'), 'index.html')
 
 # Раздача остальных статических файлов (HTML, CSS, JS)
 @app.route('/<path:filename>')

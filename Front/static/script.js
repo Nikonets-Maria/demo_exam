@@ -120,24 +120,128 @@ async function createApplication() {
     }
 }
 
+// let currentSlide = 0;
+let slidesCount = 0;
+
 async function loadMyApplications() {
     try {
         const apps = await apiRequest('/api/my_applications', 'GET');
-        const tbody = document.querySelector('#my-applications-table tbody');
-        tbody.innerHTML = '';
+        const track = document.getElementById('applications-slider');
+        const emptyDiv = document.getElementById('slider-empty');
+        const dotsContainer = document.getElementById('slider-dots');
         
+        if (!apps || apps.length === 0) {
+            track.innerHTML = '';
+            emptyDiv.style.display = 'block';
+            dotsContainer.innerHTML = '';
+            return;
+        }
+        
+        emptyDiv.style.display = 'none';
+        
+        // Создаём карточки для каждой заявки
+        track.innerHTML = '';
         apps.forEach(app => {
-            const row = tbody.insertRow();
-            row.insertCell(0).textContent = app.course_name;
-            row.insertCell(1).textContent = app.start_date;
-            row.insertCell(2).textContent = app.payment_method;
-            row.insertCell(3).textContent = app.status;
-            row.insertCell(4).textContent = app.created_at;
+            const card = document.createElement('div');
+            card.className = 'application-card';
+            
+            let statusClass = '';
+            if (app.status === 'Новая') statusClass = 'status-new';
+            else if (app.status === 'Идет обучение') statusClass = 'status-learning';
+            else if (app.status === 'Обучение завершено') statusClass = 'status-completed';
+            
+            card.innerHTML = `
+                <h4>${escapeHtml(app.course_name)}</h4>
+                <p><strong>Дата начала:</strong> ${app.start_date}</p>
+                <p><strong>Способ оплаты:</strong> ${app.payment_method}</p>
+                <p><strong>Дата подачи:</strong> ${app.created_at}</p>
+                <span class="status ${statusClass}">${app.status}</span>
+            `;
+            track.appendChild(card);
         });
+        
+        // Настройка слайдера
+        const cardsPerView = getCardsPerView();
+        slidesCount = Math.ceil(apps.length / cardsPerView);
+        currentSlide = 0;
+        
+        // Создаём точки навигации
+        dotsContainer.innerHTML = '';
+        for (let i = 0; i < slidesCount; i++) {
+            const dot = document.createElement('span');
+            dot.className = 'dot';
+            if (i === 0) dot.classList.add('active');
+            dot.onclick = () => goToSlide(i);
+            dotsContainer.appendChild(dot);
+        }
+        
+        updateSliderPosition();
+        
     } catch(e) {
         console.error('Ошибка загрузки заявок:', e);
     }
 }
+
+function getCardsPerView() {
+    const width = window.innerWidth;
+    if (width < 768) return 1;
+    if (width < 1024) return 2;
+    return 3;
+}
+
+function updateSliderPosition() {
+    const cardsPerView = getCardsPerView();
+    const track = document.getElementById('applications-slider');
+    const cards = track.children;
+    
+    if (cards.length === 0) return;
+    
+    const cardWidth = cards[0].offsetWidth + 20; // + margin
+    const offset = currentSlide * cardsPerView * cardWidth;
+    track.style.transform = `translateX(-${offset}px)`;
+    
+    // Обновляем активную точку
+    const dots = document.querySelectorAll('.dot');
+    dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentSlide);
+    });
+}
+
+function nextSlide() {
+    if (currentSlide < slidesCount - 1) {
+        currentSlide++;
+        updateSliderPosition();
+    }
+}
+
+function prevSlide() {
+    if (currentSlide > 0) {
+        currentSlide--;
+        updateSliderPosition();
+    }
+}
+
+function goToSlide(index) {
+    currentSlide = index;
+    updateSliderPosition();
+}
+
+function escapeHtml(str) {
+    if (!str) return '';
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
+// Добавить обработчик изменения размера окна для адаптивности
+window.addEventListener('resize', function() {
+    if (document.getElementById('applications-slider')) {
+        loadMyApplications();
+    }
+});
 
 async function loadCompletedApplications() {
     try {
@@ -269,6 +373,60 @@ async function updateStatus(appId, status) {
     } catch(e) {
         alert(e.message);
     }
+}
+
+// Слайд-шоу на главной странице
+let slideIndex = 1;
+let slideInterval;
+
+function showSlides(n) {
+    const slides = document.getElementsByClassName('slide');
+    const dots = document.getElementsByClassName('dot');
+    
+    if (n > slides.length) {
+        slideIndex = 1;
+    }
+    if (n < 1) {
+        slideIndex = slides.length;
+    }
+    
+    for (let i = 0; i < slides.length; i++) {
+        slides[i].classList.remove('active');
+    }
+    
+    for (let i = 0; i < dots.length; i++) {
+        dots[i].classList.remove('active');
+    }
+    
+    slides[slideIndex - 1].classList.add('active');
+    dots[slideIndex - 1].classList.add('active');
+}
+
+function changeSlide(n) {
+    clearInterval(slideInterval);
+    slideIndex += n;
+    showSlides(slideIndex);
+    startAutoSlide();
+}
+
+function currentSlide(n) {
+    clearInterval(slideInterval);
+    slideIndex = n;
+    showSlides(slideIndex);
+    startAutoSlide();
+}
+
+function startAutoSlide() {
+    slideInterval = setInterval(function() {
+        slideIndex++;
+        showSlides(slideIndex);
+    }, 3000);
+}
+
+// Запуск слайд-шоу при загрузке страницы
+if (document.querySelector('.slideshow-container')) {
+    showSlides(slideIndex);
+    startAutoSlide();
 }
 
 // Автоматический запуск при загрузке страницы
