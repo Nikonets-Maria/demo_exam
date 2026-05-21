@@ -5,6 +5,7 @@ from flask_cors import CORS
 import hashlib
 import datetime
 import re
+import os
 from flask import send_from_directory
 
 app = Flask(__name__)
@@ -27,7 +28,10 @@ def hash_password(password):
 # Раздача фронтенда
 @app.route('/')
 def serve_frontend():
-    return send_from_directory('static', 'index.html')
+    frontend_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'Front', 'pages'))
+    return send_from_directory(frontend_dir, 'index.html')
+# C:\Users\DEMEXAM\Desktop\demo_exam\DEMO\app\Front\pages\index.html
+# C:\Users\DEMEXAM\Desktop\demo_exam\DEMO\app\Back\app.py
 
 # ==================== РЕГИСТРАЦИЯ ====================
 @app.route('/api/register', methods=['POST'])
