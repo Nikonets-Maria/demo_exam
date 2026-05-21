@@ -14,25 +14,129 @@
             <button onclick="logout()" class="danger">Выйти</button>
         </div>
         
+        <!-- Панель фильтров -->
+        <div class="section">
+            <h2>Фильтры заявок</h2>
+            <div class="filters-panel">
+                <div class="filter-group">
+                    <label>Статус:</label>
+                    <select id="filter-status">
+                        <option value="all">Все</option>
+                        <option value="Новая">Новая</option>
+                        <option value="Идет обучение">Идет обучение</option>
+                        <option value="Обучение завершено">Обучение завершено</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Пользователь:</label>
+                    <input type="text" id="filter-user" placeholder="Поиск по логину">
+                </div>
+                <div class="filter-group">
+                    <label>Курс:</label>
+                    <input type="text" id="filter-course" placeholder="Поиск по курсу">
+                </div>
+                <div class="filter-group">
+                    <label>Дата от:</label>
+                    <input type="date" id="filter-date-from">
+                </div>
+                <div class="filter-group">
+                    <label>Дата до:</label>
+                    <input type="date" id="filter-date-to">
+                </div>
+                <div class="filter-actions">
+                    <button onclick="applyFilters()" class="success">Применить</button>
+                    <button onclick="resetFilters()" class="danger">Сбросить</button>
+                </div>
+            </div>
+        </div>
+        
         <!-- Все заявки -->
         <div class="section">
-            <h2>Все заявки</h2>
-            <table class="data-table" id="all-applications-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Пользователь</th>
-                        <th>Курс</th>
-                        <th>Дата начала</th>
-                        <th>Оплата</th>
-                        <th>Статус</th>
-                        <th>Действие</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+            <div class="table-header">
+                <h2>Все заявки</h2>
+            </div>
+            
+            <div class="table-controls">
+                <div class="sort-controls">
+                    <label>Сортировать по:</label>
+                    <select id="sort-field" onchange="sortApplications()">
+                        <option value="id">ID</option>
+                        <option value="user_login">Пользователь</option>
+                        <option value="course_name">Курс</option>
+                        <option value="start_date">Дата начала</option>
+                        <option value="status">Статус</option>
+                    </select>
+                    <select id="sort-order" onchange="sortApplications()">
+                        <option value="asc">▲ По возрастанию</option>
+                        <option value="desc">▼ По убыванию</option>
+                    </select>
+                </div>
+                <div class="items-per-page">
+                    <label>Показывать:</label>
+                    <select id="items-per-page" onchange="changeItemsPerPage()">
+                        <option value="10">10</option>
+                        <option value="25" selected>25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="table-wrapper">
+                <table class="data-table" id="all-applications-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortByField('id')" style="cursor: pointer;">ID ↕</th>
+                            <th onclick="sortByField('user_login')" style="cursor: pointer;">Пользователь ↕</th>
+                            <th onclick="sortByField('course_name')" style="cursor: pointer;">Курс ↕</th>
+                            <th onclick="sortByField('start_date')" style="cursor: pointer;">Дата начала ↕</th>
+                            <th>Оплата</th>
+                            <th onclick="sortByField('status')" style="cursor: pointer;">Статус ↕</th>
+                            <th>Действие</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            
+            <!-- Пагинация -->
+            <div class="pagination" id="pagination">
+                <button onclick="firstPage()" class="pagination-btn">« Первая</button>
+                <button onclick="prevPage()" class="pagination-btn">‹ Предыдущая</button>
+                <span class="page-info" id="page-info">Страница 1 из 1</span>
+                <button onclick="nextPage()" class="pagination-btn">Следующая ›</button>
+                <button onclick="lastPage()" class="pagination-btn">Последняя »</button>
+            </div>
+            
+            <div class="stats-info" id="stats-info"></div>
         </div>
     </div>
+    
+    <!-- Модальное окно подтверждения -->
+    <div id="confirm-modal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <h3>Подтверждение действия</h3>
+            <p id="modal-message">Вы уверены?</p>
+            <div class="modal-buttons">
+                <button onclick="confirmAction(true)" class="success">Да</button>
+                <button onclick="confirmAction(false)" class="danger">Нет</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Модальное окно уведомления -->
+    <div id="notification-modal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <h3>Уведомление</h3>
+            <p id="notification-message"></p>
+            <div class="modal-buttons">
+                <button onclick="closeNotification()" class="success">OK</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Всплывающее уведомление (toast) -->
+    <div id="toast" class="toast" style="display:none;"></div>
     
     <script src="/script.js"></script>
 </body>
