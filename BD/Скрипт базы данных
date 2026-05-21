@@ -1,0 +1,55 @@
+
+-- Таблица пользователей
+CREATE TABLE IF NOT EXISTS users (
+    id SERIAL PRIMARY KEY,
+    login VARCHAR(50) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    full_name VARCHAR(100),
+    phone VARCHAR(20),
+    email VARCHAR(100),
+    role VARCHAR(20) DEFAULT 'user',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    is_blocked BOOLEAN DEFAULT FALSE,
+    last_login TIMESTAMP
+);
+
+-- Таблица заявок 
+CREATE TABLE IF NOT EXISTS applications (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    course_name VARCHAR(255) NOT NULL,
+    start_date DATE NOT NULL,
+    payment_method VARCHAR(50) NOT NULL,
+    status VARCHAR(50) DEFAULT 'Новая',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Таблица отзывов
+CREATE TABLE IF NOT EXISTS reviews (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    application_id INTEGER REFERENCES applications(id) ON DELETE CASCADE,
+    rating INTEGER CHECK (rating >= 1 AND rating <= 5),
+    comment TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Ограничение на статусы заявок
+ALTER TABLE applications DROP CONSTRAINT IF EXISTS applications_status_check;
+ALTER TABLE applications ADD CONSTRAINT applications_status_check 
+CHECK (status IN ('Новая', 'Идет обучение', 'Обучение завершено'));
+
+-- Добавление фиксированного администратора
+-- Хеш для пароля "KorokNET"
+INSERT INTO users (login, password_hash, role, full_name, phone, email) 
+VALUES (
+    'Admin26', 
+    '050f9d0ca2cfcda90c1c8fbb5d3c11ae19e83237e75cb209def7af5e7db1d239', 
+    'admin', 
+    'Администратор', 
+    '8(000)000-00-00', 
+    'admin@example.com'
+) ON CONFLICT (login) DO NOTHING;
+
+-- Проверка, что админ создан
+SELECT id, login, role FROM users WHERE login = 'Admin26';

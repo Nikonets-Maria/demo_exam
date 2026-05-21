@@ -54,7 +54,7 @@ input, select, textarea {
 }
 
 button {
-    background-color: #007bff;
+    background-color: #4d7fb0;
     color: white;
     padding: 12px 20px;
     border: none;
@@ -66,21 +66,21 @@ button {
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #3b6188;
 }
 
 .danger {
-    background-color: #dc3545;
+    background-color: #634951;
 }
 .danger:hover {
-    background-color: #c82333;
+    background-color: #c94653;
 }
 
 .success {
-    background-color: #28a745;
+    background-color: #7dcf90;
 }
 .success:hover {
-    background-color: #218838;
+    background-color: #8ece9c;
 }
 
 /* Навигация */
@@ -91,7 +91,7 @@ button:hover {
     align-items: center;
     margin-bottom: 20px;
     padding-bottom: 10px;
-    border-bottom: 2px solid #007bff;
+    border-bottom: 2px solid #8e78d8;
 }
 
 .header h1 {
@@ -125,7 +125,7 @@ button:hover {
 }
 
 .data-table th {
-    background-color: #007bff;
+    background-color: #67a5c4;
     color: white;
     font-weight: 500;
     white-space: nowrap;
@@ -187,22 +187,22 @@ button:hover {
 }
 
 .status-new {
-    background-color: #ffc107;
+    background-color: #ffe8a2;
     color: #856404;
 }
 
 .status-learning {
-    background-color: #17a2b8;
+    background-color: #9ee6f1;
     color: white;
 }
 
 .status-completed {
-    background-color: #28a745;
+    background-color: #aaf8bc;
     color: white;
 }
 
 .slider-btn {
-    background-color: #007bff;
+    background-color: #969696;
     color: white;
     border: none;
     border-radius: 50%;
@@ -232,7 +232,7 @@ button:hover {
 }
 
 .dot.active {
-    background-color: #007bff;
+    background-color: #71aeee;
     transform: scale(1.2);
 }
 
@@ -255,7 +255,7 @@ button:hover {
 }
 
 .success-message {
-    color: #28a745;
+    color: #82ea9b;
     margin-top: 10px;
     padding: 10px;
     background-color: #d4edda;
@@ -270,7 +270,7 @@ button:hover {
 }
 
 .auth-links a {
-    color: #007bff;
+    color: #00458f;
     text-decoration: none;
     display: inline-block;
     margin: 5px;
@@ -283,11 +283,11 @@ button:hover {
     padding: 12px;
     margin-bottom: 12px;
     border-radius: 8px;
-    border-left: 3px solid #007bff;
+    border-left: 3px solid #55a6fd;
 }
 
 .review-rating {
-    color: #ffc107;
+    color: #ffe79e;
     font-size: 16px;
     margin-bottom: 5px;
 }
@@ -316,7 +316,7 @@ button:hover {
 
 .button-group .button {
     display: inline-block;
-    background-color: #007bff;
+    background-color: #0259b5;
     color: white;
     padding: 10px 20px;
     text-decoration: none;
@@ -627,11 +627,11 @@ button:hover {
 }
 
 .toast.error {
-    background-color: #dc3545;
+    background-color: #dc3586;
 }
 
 .toast.warning {
-    background-color: #ffc107;
+    background-color: #f9c732;
     color: #333;
 }
 
